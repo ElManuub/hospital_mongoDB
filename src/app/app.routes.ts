@@ -18,6 +18,7 @@ import { ListComponent as productsList } from './home/products/list/list.compone
 import { CreateComponent as createProduct } from './home/products/create/create.component';
 import { EditComponent as editProduct } from './home/products/edit/edit.component';
 import { ShowComponent as showProduct } from './home/products/show/show.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 export const routes: Routes = [
@@ -55,5 +56,8 @@ export const routes: Routes = [
 {path:'categories/edit', component:editCategory},
 
 //auth
-{path:'login', component:LoginComponent}
+{path:'login', component:LoginComponent},
+
+//profile
+{path:'profile', component:ProfileComponent}
 ];

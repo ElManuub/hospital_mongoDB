@@ -1,1 +1,4 @@
 @import "tailwindcss";
+ select {
+  background-color: transparent;
+ }

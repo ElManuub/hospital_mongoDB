@@ -1,13 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavComponent } from "../../templates/nav/nav.component";
 import { FooterComponent } from "../../templates/footer/footer.component";
+import { Employees } from '../../models/employees';
+import { EmployeesService } from '../../services/employees/employees.service';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-list',
-  imports: [NavComponent, FooterComponent],
+  standalone: true,
+  imports: [NavComponent, FooterComponent, CommonModule, RouterLink],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
+
+  employees: Employees[] = []; 
+
+  constructor(private employeeService: EmployeesService) {}
+  
+
+  ngOnInit(): void {
+    
+    this.employeeService.listar().subscribe(res => {
+      console.log(res);
+      this.employees = res
+    })
+  }
+
+
 
 }
+
