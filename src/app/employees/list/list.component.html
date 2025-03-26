@@ -1,27 +1,27 @@
 <div class="h-screen flex flex-col">
     <app-nav />
 
-    <!-- Contenedor principal que crece ocupando el espacio disponible -->
+    <!-- principal container -->
     <div class="bg-gray-50 flex items-center justify-center flex-1">
         <div class="w-full max-w-5xl px-4">
             <h1 class="text-3xl font-bold mb-6 text-center">Administración de Empleados</h1>
 
             <div class="block text-left mb-6">
                 <form action="" method="GET">
-                    <input type="text" name="search" value="" 
-                        class="py-2 px-4 border border-gray-300 rounded-md" placeholder="Buscar Empleado...">
+                    <input type="text" name="search" value="" class="py-2 px-4 border border-gray-300 rounded-md"
+                        placeholder="Buscar Empleado...">
                     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md">Buscar</button>
                 </form>
             </div>
 
             <div class="block text-left mb-6">
-                <a href="employee/create" 
-                   class="text-white bg-yellow-400 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-800">
-                   Agregar empleado
+                <a href="employee/create"
+                    class="text-white bg-yellow-400 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-800">
+                    Agregar empleado
                 </a>
             </div>
 
-            <!-- Tabla -->
+            <!-- table -->
             <div class="overflow-x-auto">
                 <table class="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                     <thead>
@@ -46,18 +46,21 @@
                                 <span class="text-sm font-semibold">{{ employee.status }}</span>
                             </td>
                             <td class="py-3 px-4">
-                                <img class="w-16 h-16 rounded-lg" [src]="employee.profile_image" alt="Foto de {{ employee.first_name }}">
+                                <img class="w-16 h-16 rounded-lg" [src]="employee.profile_image"
+                                    alt="Foto de {{ employee.first_name }}">
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <a [routerLink]="['/employee/edit', employee._id]" routerLinkActive="router-link-active" class="text-blue-500 font-semibold hover:underline">Editar</a>
+                                <a [routerLink]="['/employee/edit', employee._id]" routerLinkActive="router-link-active"
+                                    class="text-blue-500 font-semibold hover:underline">Editar</a>
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <a [routerLink]="['/employee/show', employee._id]" class="text-blue-500 font-semibold hover:underline">Mostrar</a>
+                                <a [routerLink]="['/employee/show', employee._id]"
+                                    class="text-blue-500 font-semibold hover:underline">Mostrar</a>
                             </td>
                         </tr>
                     </tbody>
 
-                    <!-- No hay empleados -->
+                    <!-- don't employees -->
                     <ng-template #noEmployees>
                         <tbody>
                             <tr>
@@ -67,10 +70,13 @@
                     </ng-template>
 
                 </table>
+                <!-- Mostrar mensaje de error si hay uno -->
+                <div *ngIf="errorMessage" class="text-red-500 mt-2">
+                    {{ errorMessage }}
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer fijo en la parte inferior -->
     <app-footer />
 </div>

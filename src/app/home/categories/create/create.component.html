@@ -1,41 +1,76 @@
 <app-nav />
-    
-    <div style="height: 10px"></div>
 
-    <nav class="flex mb-4" aria-label="Breadcrumb">
-      
-      <form class="max-w-md mx-auto dark:bg-gray-900 p-6 rounded-lg shadow-md" action="/categoria/registrar" method="POST" enctype="multipart/form-data">
-          
-        <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
+<div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 py-12">
+    <form class="w-full max-w-lg bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg mt-6 mb-6"
+        action="/categoria/registrar" method="POST" enctype="multipart/form-data">
+
+        <h2
+            class="mb-6 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white text-center">
             Registrar categoría</h2>
-          <hr><br>
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="text" name="name" id="name"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " value=" " required />
-                <label for="name"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Nombre</label>
-                    
-                        <p class="text-red-500 text-xs mt-1"> $message </p>
-                    
+        <hr class="mb-4">
+
+        <div class="relative z-0 w-full mb-6 group">
+            <input type="text" name="name" id="name"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" " required [(ngModel)]="category.name" #nombre="ngModel" />
+            <label for="name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Nombre</label>
+            <div *ngIf="nombre?.invalid && nombre?.touched">
+                <small *ngIf="nombre?.errors?.['required']" class="text-red-500">El nombre es obligatorio.</small>
+                <small *ngIf="nombre?.errors?.['minlength']" class="text-red-500">Debe tener al menos 4
+                    caracteres.</small>
+                <small *ngIf="nombre?.errors?.['maxlength']" class="text-red-500">No debe pasar de los 50
+                    caracteres.</small>
             </div>
-          
-            <div class="relative z-0 w-full mb-5 group">
-                <input type="file" name="image" id="image" accept="image/*"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required />
-                <label for="image"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Imagen</label>
-                    
-                        <p class="text-red-500 text-xs mt-1"> $message </p>
-                    
+        </div>
+
+        <div class="relative z-0 w-full mb-6 group">
+            <input type="text" name="description" id="description" minlength="5" maxlength="100" required=""
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" " required [(ngModel)]="category.description" #description="ngModel" />
+            <label for="name"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Descripcion</label>
+            <div *ngIf="description?.invalid && description?.touched">
+                <small *ngIf="description?.errors?.['required']" class="text-red-500">Debe de haber una descripcion.</small>
+                <small *ngIf="description?.errors?.['minlength']" class="text-red-500">debe de ser una descripcion breve de minimo 5 letras</small>
+                <small *ngIf="description?.errors?.['maxlength']" class="text-red-500">No debe pasar de los 100
+                    caracteres.</small>
             </div>
-            <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Crear</button>
-        </form>
+        </div>
+
+        <div class="relative z-0 w-full mb-6 group">
+            <input type="file" name="image" id="image" accept="image/*" (change)="seleccionImagen($event)"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                required [(ngModel)]="category.category_image" #imagen="ngModel" />
+            <label for="image"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Imagen</label>
+            <div *ngIf="imagen?.invalid && imagen?.dirty">
+                <small *ngIf="imagen?.errors?.['required']" class="text-red-500">La imagen es obligatoria.</small>
+            </div>
+        </div>
 
 
-    <app-footer />
+        <div class="flex justify-center gap-2">
+            <button type="button" (click)="submit()"
+                class="w-1/2 bg-green-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md shadow-md hover:bg-green-700 transition duration-300">Agregar</button>
+            <button type="button"
+                class="w-1/2 bg-yellow-600 hover:bg-yellow-400 text-white font-bold py-2 px-3 rounded-md shadow-md hover:bg-green-700 transition duration-300">
+                <a href="/categories/list">Cancelar</a>
+            </button>
+        </div>
+
+        <!-- Mostrar mensaje de error si hay uno -->
+        <div *ngIf="errorValidacion" class="text-red-500 mt-2">
+            {{ errorValidacion }}
+        </div>
+        <!-- Mostrar mensaje de error si hay uno -->
+        <div *ngIf="errorMessage" class="text-red-500 mt-2">
+            {{ errorMessage }}
+        </div>
+    </form>
+</div>
+
+<app-footer />

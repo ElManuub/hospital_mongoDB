@@ -10,54 +10,82 @@
       Registrar producto</h2>
     <hr><br>
     <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="name" id="name"
+      <input type="text" name="name" id="name" #name="ngModel" [(ngModel)]="product.name"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" " value="" required />
+        placeholder=" " value="" required minlength="1" maxlength="50" />
       <label for="name"
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
         Nombre</label>
 
-      <p class="text-red-500 text-xs mt-1"> $message </p>
+      <div *ngIf="name?.invalid && name?.touched">
+        <small *ngIf="name?.errors?.['required']" class="text-red-500">El nombre es obligatorio.</small>
+        <small *ngIf="name?.errors?.['minlength']" class="text-red-500">Debe tener al menos 1
+          caracter.</small>
+        <small *ngIf="name?.errors?.['maxlength']" class="text-red-500">No debe pasar de los 50
+          caracteres.</small>
+      </div>
 
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
-      <select name="category_id" id="category_id"
+      <select name="category_id" id="category_id" #ncategory="ngModel" [(ngModel)]="product.category_id"
         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
         <option value="" disabled selected>Selecciona una categoría</option>
-
-        <option value="">
-          $category->name
+        @for (category of categories; track $index) {
+        <option value="{{ product.category_id }}">
+          {{ categories[0] }}
         </option>
-
+        } @empty {
+        <option value="">
+          No hay categorias.
+        </option>
+        }
       </select>
-
-      <p class="text-red-500 text-xs mt-1"> $message </p>
-
+      <div *ngIf="ncategory?.invalid && ncategory?.touched">
+        <small *ngIf="ncategory?.errors?.['required']" class="text-red-500">Debe seleccionar una categoria.</small>
+      </div>
     </div>
 
+    <!-- Precio unitario -->
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="unit_price" id="unit_price"
+      <input type="number" name="unit_price" id="unit_price" required min="0" #unitPrice="ngModel"
+        [(ngModel)]="product.unit_price"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" " value="" step="0.01" required />
+        placeholder=" " />
       <label for="unit_price"
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-        Precio unitario</label>
-
-      <p class="text-red-500 text-xs mt-1"> $message </p>
-
+        Precio unitario
+      </label>
+      <div *ngIf="unitPrice?.invalid && unitPrice?.touched">
+        <small *ngIf="unitPrice?.errors?.['required']" class="text-red-500">
+          Debe ingresar un stock válido.
+        </small>
+        <small *ngIf="unitPrice?.errors?.['min']" class="text-red-500">
+          Precio no puede ser menor a 0
+        </small>
+      </div>
     </div>
+
+    <!-- Stock disponible -->
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="unit_stock" id="unit_stock"
+      <input type="number" name="unit_stock" id="unit_stock" [(ngModel)]="product.unit_stock" #unitStock="ngModel"
+        required min="0"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=" " value="" required />
-      <label for="unit_price"
+        placeholder=" " />
+      <label for="unit_stock"
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-        Stock disponible</label>
-
-      <p class="text-red-500 text-xs mt-1"> $message </p>
-
+        Stock disponible
+      </label>
+      <div *ngIf="unitStock?.invalid && unitStock?.touched">
+        <small *ngIf="unitStock?.errors?.['required']" class="text-red-500">
+          Debe ingresar un stock válido.
+        </small>
+        <small *ngIf="unitStock?.errors?.['min']" class="text-red-500">
+          Stock no puede ser menor a 0
+        </small>
+      </div>
     </div>
+
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="file" name="image" id="image" accept="image/*"
@@ -67,10 +95,17 @@
         class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
         Imagen</label>
 
-      <p class="text-red-500 text-xs mt-1"> $message </p>
-
     </div>
-    <button type="submit"
+    <button type="button" (click)="submit()"
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       Crear</button>
+
+    <!-- Mostrar mensaje de error si hay uno -->
+    <div *ngIf="errorMessage" class="text-red-500 mt-2">
+      {{ errorMessage }}
+    </div>
+    <!-- Mostrar mensaje de error si hay uno -->
+    <div *ngIf="errorValidation" class="text-red-500 mt-2">
+      {{ errorValidation }}
+    </div>
   </form>

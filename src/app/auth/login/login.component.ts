@@ -1,21 +1,29 @@
 import { Component } from '@angular/core';
 import  { CookieService }  from  'ngx-cookie-service' ;
+import { LogingService } from '../../services/login/loging.service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
-  token : string = '';
-  constructor(private cookie: CookieService){}
+  email: string = ''
+  password: string = ''
+  
+  constructor(private auth: LogingService, private router: Router){}
 
   loggear(){
-   //guardar el token
-     this.cookie.set('token', 'valor');
-     //obtener token
-     this.token = this.cookie.get('token');
+    this.auth.login(this.email, this.password).subscribe({
+      next: (res)=>{
+        this.router.navigate(['/'])
+      },
+      error: (err)=>{
+        console.error(err)
+      }
+    })
   }
 }

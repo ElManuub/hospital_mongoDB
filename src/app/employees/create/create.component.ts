@@ -1,117 +1,79 @@
 import { Component, OnInit } from '@angular/core';
 import { NavComponent } from "../../templates/nav/nav.component";
 import { FooterComponent } from "../../templates/footer/footer.component";
-import { FormGroup, ReactiveFormsModule, Validators, FormBuilder, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Employees } from '../../models/employees';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { EmployeesService } from '../../services/employees/employees.service';
 
 @Component({
   selector: 'app-create',
-  imports: [NavComponent, FooterComponent, ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [NavComponent, FooterComponent, CommonModule, FormsModule],
   templateUrl: './create.component.html',
   styleUrl: './create.component.css'
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent {
 
-  employeeForm!: FormGroup;
-  id: string = '';
-  
+  photo : File | null = null;  
+  password2: string = ''
+  formStatus: string = ''
+  formStatusMessage: string = ''
+  errorMessage: string = ''
+
   public employee: Employees = {
     _id : '',
     first_name: '',
     last_name: '',
-    birth_date: new Date(),
+    birth_date: '',
     email: '',
     employee_type: '',
     gender: '',
-    hire_date: new Date(),
+    hire_date: '',
+    profile_image:'',
     notes: '',
     address: '',
-    profile_image: '',
     password: '',
     status: ''
   }
-  constructor(private fb: FormBuilder, private href: ActivatedRoute, private route: Router, private employeeService : EmployeesService) { }
 
-  ngOnInit(): void {
-
-
-    this.employeeForm = this.fb.group({
-      first_name: ['', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50)
-      ]],
-      last_name: ['', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50)
-      ]],
-      gender: ['', Validators.required],
-      email : ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      password2 : ['', [Validators.required]],
-      address: ['', [Validators.required, Validators.minLength(1)]],
-      postal_code: ['', [Validators.required, Validators.minLength(5)]],
-      employee_type: ['', Validators.required],
-      birth_date: ['', Validators.required],
-      photo: ['']
-    },{ validators: this.passwordsMatch })
-
-    this.passwordsMatch(this.employeeForm)
-  }
-
-  passwordsMatch(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const password_confirmation = group.get('password2')?.value;
-    return password === password_confirmation ? null : { mismatch: true };
-  }
+  constructor(private route: Router, private employeeService : EmployeesService) { }
 
 
-  //obtener los valores del form
-  get first_name() {
-    return this.employeeForm.get('first_name');
-  }
-  get last_name() {
-    return this.employeeForm.get('last_name');
-  }
-  get gender() {
-    return this.employeeForm.get('gender');
-  }
-  get email() {
-    return this.employeeForm.get('email');
-  }
-
-  get password(){
-    return this.employeeForm.get('password');
-  }
-
-  get birth_date(){
-    return this.employeeForm.get('birth_date');
-  }
-
-  get address(){
-    return this.employeeForm.get('address');
-  }
-  get postal_code(){
-    return this.employeeForm.get('postal_code');
-  }
-  get employee_type(){
-    return this.employeeForm.get('employee_type');
-  }
-
-  get password2(){
-    return this.employeeForm.get('password2');
-  }
-
-  //enviar informacion
-  submit(){
-    
-    this.employeeService.createEmployee(this.employee).subscribe(res => {
-      console.log(res);
-    })
+  seleccionImagen(evento: any) {
+    if (evento.target.files.length > 0) {
+      this.photo = evento.target.files[0];
     }
+  }
+  
+  createEmployee() {
+    this.employeeService.createEmployee(this.employee, this.photo!).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.route.navigate(['/employees/list']);
+      },
+      error: (err) => {
+        console.error('Error al crear empleado:', err);
+        this.errorMessage = err.message || 'Hubo un problema al crear el empleado. Intenta nuevamente.';
+      }
+    });
+  }
+
+    submit() {
+    if (this.employee.first_name && this.employee.last_name && this.employee.address && this.employee.email && this.employee.gender){
+      //llamamos a la apli
+      this.createEmployee()
+      this.formStatus = 'Éxito';
+      this.formStatusMessage = 'Los datos son validos.';
+    } else {
+      this.formStatus = 'Faltan datos';
+      this.formStatusMessage = 'Por favor, complete todos los campos y asegúrese de que las contraseñas coincidan.';
+    }
+
+    if (this.employee.password !== this.password2) {
+      this.formStatus = 'Faltan datos';
+      this.formStatusMessage = 'Las contraseñas no coincidan.';
+    }
+  }
 
 }

@@ -48,20 +48,13 @@
               <hr>
               <div class="font-medium truncate">correo</div>
             </div>
-            <div class="py-1">
-              <form action="/cerrar_sesion" method="post">
-                <button type="submit"
+            <div class="py-1"> 
+                <button type="button" (click)="logout()"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                   Cerrar sesión
                 </button>
-              </form>
             </div>
           </div>
-        </li>
-        <li>
-          <a href="login" class="block px-3 py-2 text-white hover:text-yellow-500 no-underline rounded transition-colors duration-300">
-            Iniciar sesión
-          </a>
         </li>
       </ul>
     </div>

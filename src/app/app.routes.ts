@@ -26,38 +26,38 @@ export const routes: Routes = [
 {path:'', component:MainComponent, canActivate:[userGuardGuard]},
 
 //customers
-{path:'customers', component:customers},
-{path:'customers/show', component:showCustomers},
+{path:'customers', component:customers, canActivate:[userGuardGuard]},
+{path:'customers/show', component:showCustomers, canActivate:[userGuardGuard]},
 
 //employees
-{path:'employees/list', component: listEmployees},
-{path:'employee/show', component: showEmployees},
-{path:'employee/edit', component: editEmployees},
-{path:'employee/create', component: createEmployee},
+{path:'employees/list', component: listEmployees, canActivate:[userGuardGuard]},
+{path:'employee/show', component: showEmployees, canActivate:[userGuardGuard]},
+{path:'employee/edit', component: editEmployees, canActivate:[userGuardGuard]},
+{path:'employee/create', component: createEmployee, canActivate:[userGuardGuard]},
 
 // point of sale
-{path:'sales', component: PointOfSaleComponent},
+{path:'sales', component: PointOfSaleComponent, canActivate:[userGuardGuard]},
 
 //orders
-{path:'orders/list', component:ShopComponent},
+{path:'orders/list', component:ShopComponent, canActivate:[userGuardGuard]},
 
 // shoppings history
-{path:'history', component:ShopComponent},
+{path:'history', component:ShopComponent, canActivate:[userGuardGuard]},
 
 //store - products
-{path:'store', component:StoreComponent},
-{path:'products/list', component:productsList},
-{path:'product/create', component:createProduct},
-{path:'product/edit', component:editProduct},
-{path:'product/show', component:showProduct},
+{path:'store', component:StoreComponent, canActivate:[userGuardGuard]},
+{path:'products/list', component:productsList, canActivate:[userGuardGuard]},
+{path:'product/create', component:createProduct, canActivate:[userGuardGuard]},
+{path:'product/edit', component:editProduct, canActivate:[userGuardGuard]},
+{path:'product/show', component:showProduct, canActivate:[userGuardGuard]},
 //categories
-{path:'categories/list', component:listCategories},
-{path:'categories/create', component:createCategory},
-{path:'categories/edit', component:editCategory},
+{path:'categories/list', component:listCategories, canActivate:[userGuardGuard]},
+{path:'categories/create', component:createCategory, canActivate:[userGuardGuard]},
+{path:'categories/edit', component:editCategory, canActivate:[userGuardGuard]},
 
 //auth
-{path:'login', component:LoginComponent},
+{path:'login', component:LoginComponent, canActivate:[userGuardGuard]},
 
 //profile
-{path:'profile', component:ProfileComponent}
+{path:'profile', component:ProfileComponent, canActivate:[userGuardGuard]}
 ];

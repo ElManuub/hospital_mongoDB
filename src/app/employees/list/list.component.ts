@@ -16,15 +16,22 @@ import { RouterLink } from '@angular/router';
 export class ListComponent implements OnInit {
 
   employees: Employees[] = []; 
+  errorMessage: string = ''
 
   constructor(private employeeService: EmployeesService) {}
   
 
   ngOnInit(): void {
     
-    this.employeeService.listar().subscribe(res => {
-      console.log(res);
-      this.employees = res
+    this.employeeService.listar().subscribe({
+      next: (res) => {
+        console.log(res);
+        this.employees = res
+      },
+      error: (err) => {
+        console.error('Error al listar empleados:', err);
+        this.errorMessage = err.message || 'Hubo un problema al listar empleados. Intenta mas tarde.';
+      }
     })
   }
 
