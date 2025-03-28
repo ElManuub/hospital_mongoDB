@@ -1,110 +1,129 @@
 <app-nav></app-nav>
-<div class="min-h-screen py-4 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-  <form
-    class="max-w-xl mx-auto dark:bg-gray-900 p-6 rounded-lg shadow-xl border-gray-300 bg-gray-50 dark:bg-green-900 dark:border-green-700"
-    [formGroup]="employeeForm">
+
+<div class="min-h-screen py-8 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+  <form class="max-w-2xl w-full mx-auto dark:bg-gray-900 p-6 rounded-lg shadow-xl border border-gray-300 bg-gray-50 dark:bg-green-900 dark:border-green-700">
     
-    <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
+    <h2 class="mb-6 text-3xl font-extrabold text-gray-900 md:text-4xl dark:text-white text-center">
       Editar Usuario
     </h2>
-    <hr>
-    <br>
 
-    <div class="grid md:grid-cols-2 md:gap-6">
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Foto de perfil -->
+      <div class="md:col-span-2 flex flex-col items-center mb-5">
+        <img [src]="employee.profile_image" alt="Foto de perfil"
+          class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600 mb-3 object-cover">
+        <input type="file" id="profile_image" name="profile_image" (change)="onFileSelected($event)" 
+          class="hidden">
+        <label for="profile_image"
+          class="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">
+          Cambiar Foto
+        </label>
+      </div>
+
       <!-- Nombre -->
       <div class="relative z-0 w-full mb-5 group">
-        <input type="text" id="first_name" placeholder=" " formControlName="first_name"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-        <label for="first_name" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                     peer-focus:scale-75 peer-focus:-translate-y-6">
-          Nombre
-        </label>
+        <input type="text" id="first_name" name="first_name" [(ngModel)]="employee.first_name" #first_name="ngModel"
+          required
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+        <label for="first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Nombre</label>
+        <div *ngIf="first_name?.invalid && first_name?.touched">
+          <small *ngIf="first_name?.errors?.['required']" class="text-red-500">El nombre es obligatorio.</small>
+        </div>
       </div>
 
       <!-- Apellidos -->
       <div class="relative z-0 w-full mb-5 group">
-        <input type="text" id="last_name" placeholder=" " formControlName="last_name"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-        <label for="last_name" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                      peer-focus:scale-75 peer-focus:-translate-y-6">
-          Apellidos
-        </label>
+        <input type="text" id="last_name" name="last_name" [(ngModel)]="employee.last_name" #last_name="ngModel"
+          required
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+        <label for="last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Apellidos</label>
+        <div *ngIf="last_name?.invalid && last_name?.touched">
+          <small *ngIf="last_name?.errors?.['required']" class="text-red-500">Los apellidos son obligatorios.</small>
+        </div>
       </div>
 
       <!-- Género -->
       <div class="relative z-0 w-full mb-5 group">
-        <select id="gender" formControlName="gender"
-          class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 
-                 appearance-none dark:text-gray-600 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-          <option value="" disabled>Selecciona un género</option>
+        <select id="gender" name="gender" [(ngModel)]="employee.gender" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+          <option value="" disabled selected hidden>Selecciona un género</option>
           <option value="hombre">Hombre</option>
           <option value="mujer">Mujer</option>
           <option value="otro">Otro</option>
         </select>
-        <label for="gender" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                    peer-focus:scale-75 peer-focus:-translate-y-6">
-          Género
-        </label>
+        <label for="gender" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Género</label>
       </div>
 
       <!-- Correo -->
       <div class="relative z-0 w-full mb-5 group">
-        <input type="email" id="email" placeholder=" " formControlName="email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-        <label for="email" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                   peer-focus:scale-75 peer-focus:-translate-y-6">
-          Correo Electrónico
-        </label>
+        <input type="email" id="email" name="email" [(ngModel)]="employee.email" #email="ngModel"
+          required
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+        <label for="email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Correo Electrónico</label>
+        <div *ngIf="email?.invalid && email?.touched">
+          <small *ngIf="email?.errors?.['required']" class="text-red-500">El correo es obligatorio.</small>
+        </div>
       </div>
+
+            <!-- password -->
+            <div class="relative z-0 w-full mb-5 group">
+              <input type="text" id="password" name="password" [(ngModel)]="password2" #password="ngModel"
+                required
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+              <label for="email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                Contraseña</label>
+              <div *ngIf="password?.invalid && password?.touched">
+                <small *ngIf="password?.errors?.['minlength']" class="text-red-500">La clave debe tener por lo manos 8 digitos</small>
+              </div>
+            </div>
 
       <!-- Fecha de Nacimiento -->
       <div class="relative z-0 w-full mb-5 group">
-        <input type="date" id="birth_date" formControlName="birth_date"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-        <label for="birth_date" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                       peer-focus:scale-75 peer-focus:-translate-y-6">
-          Fecha de Nacimiento
-        </label>
+        <input type="date" id="birth_date" name="birth_date" [(ngModel)]="employee.birth_date"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+        <label for="birth_date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Fecha de Nacimiento</label>
       </div>
 
       <!-- Dirección -->
       <div class="relative z-0 w-full mb-5 group">
-        <input type="text" id="address" placeholder=" " formControlName="address"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"/>
-        <label for="address" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                    peer-focus:scale-75 peer-focus:-translate-y-6">
-          Dirección
-        </label>
-      </div>
-
-            <!--tipo de empleado-->
-            <div class="relative z-0 w-full mb-5 col-span-2 group">
-              <select name="employee_type" id="employee_type" formControlName="employee_type"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-gray-600 dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                <option value="" disabled selected hidden>Selecciona un tipo de empleado</option>
-                <option value="Empleado">Empleado</option>
-              </select>
-              <label for="employee_type"
-                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Tipo
-                de empleado</label>
-            </div>
-
-      <!-- Notas -->
-      <div class="relative z-0 w-full mb-5 group">
-        <textarea id="notes" formControlName="notes"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 bg-transparent border-gray-300 
-                 appearance-none dark:text-gray-400 dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"></textarea>
-        <label for="notes" class="absolute text-sm text-gray-500 dark:text-gray-400 peer-placeholder-shown:translate-y-0 
-                                  peer-focus:scale-75 peer-focus:-translate-y-6">
-          Notas
-        </label>
+        <input type="text" id="address" name="address" [(ngModel)]="employee.address"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
+        <label for="address" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+          Dirección</label>
       </div>
     </div>
+
+          <!--tipo de empleado-->
+          <div class="relative z-0 w-full mb-5 col-span-2 group">
+            <select name="employee_type" id="employee_type" [(ngModel)]="employee.employee_type" #employee_type="ngModel"
+              required=""
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-gray-600 dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+              <option value="" disabled selected hidden>Selecciona un tipo de empleado</option>
+              <option value="administrador">Administrador</option>
+              <option value="empleado">Empleado</option>
+            </select>
+            <label for="employee_type"
+              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500">Tipo
+              de empleado</label>
+            <div *ngIf="employee_type?.invalid && employee_type?.touched">
+              <small *ngIf="employee_type?.errors?.['required']" class="text-red-500">Debe seleccionar el tipo de
+                empleado</small>
+            </div>
+          </div>
+        
+
+    <!-- Botón de Guardar -->
+    <div class="mt-6 flex justify-center">
+      <button type="button" (click)="submit()"
+        class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition">
+        Guardar Cambios
+      </button>
+    </div>
+
   </form>
 </div>
 

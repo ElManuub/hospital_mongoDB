@@ -27,7 +27,6 @@
                     <thead>
                         <tr class="bg-green-500 text-white">
                             <th class="py-3 px-4 text-left">Nombre de usuario</th>
-                            <th class="py-3 px-4 text-left">ID</th>
                             <th class="py-3 px-4 text-left">Fecha de nacimiento</th>
                             <th class="py-3 px-4 text-left">Tipo de empleado</th>
                             <th class="py-3 px-4 text-left">Estatus</th>
@@ -39,7 +38,6 @@
                     <tbody *ngIf="employees.length > 0; else noEmployees">
                         <tr *ngFor="let employee of employees" class="border-b hover:bg-gray-100">
                             <td class="py-3 px-4">{{ employee.first_name }}</td>
-                            <td class="py-3 px-4">{{ employee._id }}</td>
                             <td class="py-3 px-4">{{ employee.birth_date }}</td>
                             <td class="py-3 px-4">{{ employee.employee_type }}</td>
                             <td class="py-3 px-4">
@@ -50,12 +48,12 @@
                                     alt="Foto de {{ employee.first_name }}">
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <a [routerLink]="['/employee/edit', employee._id]" routerLinkActive="router-link-active"
+                                <a [routerLink]="['/employee/edit', employee.id]" routerLinkActive="router-link-active"
                                     class="text-blue-500 font-semibold hover:underline">Editar</a>
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <a [routerLink]="['/employee/show', employee._id]"
-                                    class="text-blue-500 font-semibold hover:underline">Mostrar</a>
+                                <a [routerLink]="['/employee/show/', employee.id]"
+                                    class="text-blue-500 font-semibold hover:underline">borrar</a>
                             </td>
                         </tr>
                     </tbody>

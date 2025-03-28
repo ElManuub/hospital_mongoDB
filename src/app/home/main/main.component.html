@@ -17,11 +17,13 @@
         </a>
 
 
-        <a href="employees/list"
+        <div *ngIf="user">
+            <a href="employees/list"
             class="flex flex-col items-center justify-center h-48 bg-green-500 text-white text-3xl font-bold rounded-lg shadow-lg hover:bg-green-800 transition duration-300 p-6 w-48">
             Admin
             <img class="mt-2" src="icons/img/empleados.png">
         </a>
+        </div>
 
     </div>
 </section>

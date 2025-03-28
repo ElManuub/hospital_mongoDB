@@ -1,5 +1,5 @@
 export interface Employees  {
-  _id: string,
+  id: string,
   first_name: string,
   last_name: string,
   birth_date: string,
@@ -9,7 +9,12 @@ export interface Employees  {
   hire_date: string,
   notes: string,
   address: string,
-  profile_image:string,
   password: string,
-  status: string
+  status: string,
+  profile_image: string
+}
+
+export interface Data {
+  data: any,
+  success: string
 }

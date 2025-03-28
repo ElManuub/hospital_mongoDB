@@ -1,89 +1,120 @@
-<app-nav />
-    <div style="height: 10px"></div>
+<app-nav></app-nav>
 
-    <form class="max-w-md mx-auto dark:bg-gray-900 p-6 rounded-lg shadow-md" 
-          action="" 
-          method="POST" 
-          enctype="multipart/form-data">
+<div style="height: 10px"></div>
 
-        
-        <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
-            Editar Producto
-        </h2>
-        <hr><br>
+<form 
+  class="max-w-md mx-auto dark:bg-gray-900 p-6 rounded-lg shadow-md" 
+  #productForm="ngForm"
+  (ngSubmit)="onSubmit()"
+  enctype="multipart/form-data"
+  novalidate>
 
+  <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">
+    Editar Producto
+  </h2>
+  <hr><br>
 
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="text" name="name" id="name"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " value="" required />
-            <label for="name"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Nombre</label>
-            
-                <p class="text-red-500 text-xs mt-1"> $message </p>
-  
-        </div>
+  <!-- Nombre -->
+  <div class="relative z-0 w-full mb-5 group">
+    <input 
+      type="text" 
+      id="name"
+      name="name"
+      class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+      placeholder=" "
+      [(ngModel)]="product.name"
+      #nameRef="ngModel"
+      required
+      minlength="3"
+      maxlength="255" />
+    <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+      Nombre
+    </label>
+    <p class="text-red-500 text-xs mt-1" *ngIf="nameRef.invalid && nameRef.touched">
+      {{ nameRef.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
+      {{ nameRef.errors?.['minlength']? 'Debe tener al menos 3 caracteres.' : '' }}
+    </p>
+  </div>
 
+  <!-- Categoría -->
+  <div class="relative z-0 w-full mb-5 group">
+    <select 
+      id="category_id"
+      name="category_id"
+      [(ngModel)]="product.category_id"
+      #categoryRef="ngModel"
+      required
+      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+      <option value="" disabled>Selecciona una categoría</option>
+      <option *ngFor="let category of categories" [value]="product.id">{{ product.name }}</option>
+    </select>
+    <p class="text-red-500 text-xs mt-1" *ngIf="categoryRef.invalid && categoryRef.touched">
+      Debes seleccionar una categoría.
+    </p>
+  </div>
 
-        <div class="relative z-0 w-full mb-5 group">
-            <select name="category_id" id="category_id"
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-                <option value="" disabled>Selecciona una categoría</option>
+  <!-- Precio Unitario -->
+  <div class="relative z-0 w-full mb-5 group">
+    <input 
+      type="number" 
+      id="unit_price"
+      name="unit_price"
+      class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+      placeholder=" "
+      [(ngModel)]="product.unit_price"
+      #priceRef="ngModel"
+      required
+      min="0.01"
+      step="0.01" />
+    <label for="unit_price" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+      Precio unitario
+    </label>
+    <p class="text-red-500 text-xs mt-1" *ngIf="priceRef.invalid && priceRef.touched">
+      {{ priceRef.errors?.['required'] ? 'El precio es obligatorio.' : '' }}
+      {{ priceRef.errors?.['min'] ? 'Debe ser mayor a 0.' : '' }}
+    </p>
+  </div>
 
-                <option value="" >
-                     $category->name 
-                </option>
-            </select>
-                <p class="text-red-500 text-xs mt-1"> $message </p>
-        </div>
+  <!-- Stock Disponible -->
+  <div class="relative z-0 w-full mb-5 group">
+    <input 
+      type="number" 
+      id="unit_stock"
+      name="unit_stock"
+      class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+      placeholder=" "
+      [(ngModel)]="product.unit_stock"
+      #stockRef="ngModel"
+      required
+      min="0" />
+    <label for="unit_stock" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+      Stock disponible
+    </label>
+    <p class="text-red-500 text-xs mt-1" *ngIf="stockRef.invalid && stockRef.touched">
+      {{ stockRef.errors?.['required'] ? 'El stock es obligatorio.' : '' }}
+      {{ stockRef.errors?.['min'] ? 'Debe ser mayor o igual a 0.' : '' }}
+    </p>
+  </div>
 
+  <!-- Imagen -->
+  <div class="relative z-0 w-full mb-5 group">
+    <input 
+      type="file" 
+      id="product_image"
+      name="product_image"
+      accept="image/*"
+      class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+      (change)="onImageSelected($event)" />
+    <img *ngIf="product.product_image" [src]="product.product_image" alt="Imagen del producto" class="mt-2 w-32 h-32 object-cover">
+  </div>
 
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="number" name="unit_price" id="unit_price"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " value="" step="0.01" required />
-            <label for="unit_price"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Precio unitario</label>
-            
-                <p class="text-red-500 text-xs mt-1"> $message </p>
-            
-        </div>
-
-        
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="number" name="unit_stock" id="unit_stock"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " value="" required />
-            <label for="unit_stock"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Stock disponible</label>
-            
-                <p class="text-red-500 text-xs mt-1"> $message </p>
-            
-        </div>
-
-        
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="file" name="image" id="image" accept="image/*"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " />
-                <img src="" alt="$product->name">
-              
-                <p class="text-red-500 text-xs mt-1"> errro</p>
-            
-        </div>
-
-<!--        @if ($product->status == "Activo") -->
-                <button type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    onclick="return confirm('¿Estás seguro que deseas actualizar los datos del producto?')">Actualizar</button>
-            
-                <button type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    onclick="return confirm('Si actualizas los datos del producto, su estatus pasará a activo. ¿Seguro que quieres hacerlo?')">Actualizar</button>
-            
-    </form>
+  <!-- Botón de Actualización -->
+  <button 
+    type="submit" 
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    onclick="return confirm('¿Estás seguro que deseas actualizar los datos del producto?')">
+    Actualizar
+  </button>
+</form>
 
 <app-footer></app-footer>

@@ -57,7 +57,7 @@
                     <!-- Recorre la lista de productos si hay elementos -->
                     <tr *ngFor="let product of products" class="border-b hover:bg-gray-100">
                         <td class="py-3 px-4">{{ product.name }}</td>
-                        <td class="py-3 px-4">{{ product._id }}</td>
+                        <td class="py-3 px-4">{{ product.id }}</td>
                         <td class="py-3 px-4">
                             <span class="text-sm font-semibold">
                                 {{ product.status }}
@@ -72,12 +72,12 @@
                             </div>
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <a [routerLink]="['/product/edit', product._id]" class="text-blue-500 font-semibold hover:underline">
+                            <a [routerLink]="['/product/edit/', product.id]" class="text-blue-500 font-semibold hover:underline">
                                 Editar
                             </a>
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <a [routerLink]="['/product/show', product._id]" class="text-blue-500 font-semibold hover:underline">
+                            <a [routerLink]="['/product/show/', product.id]" class="text-blue-500 font-semibold hover:underline">
                                 Detalles
                             </a>
                         </td>

@@ -25,8 +25,8 @@ export class ListComponent implements OnInit {
     
     this.employeeService.listar().subscribe({
       next: (res) => {
-        console.log(res);
-        this.employees = res
+        console.log("antes de listar"+ res.data);
+      this.employees = res.data
       },
       error: (err) => {
         console.error('Error al listar empleados:', err);

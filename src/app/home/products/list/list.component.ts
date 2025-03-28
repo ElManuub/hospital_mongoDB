@@ -13,7 +13,7 @@ import { ProductsService } from '../../../services/products/products.service';
   styleUrl: './list.component.css'
 })
 export class ListComponent implements OnInit {
-  products : Products[] = [];
+  products : any = [];
   errorMessage: string = ''
 
   constructor(private productService : ProductsService){}
@@ -22,7 +22,8 @@ export class ListComponent implements OnInit {
     this.productService.listar().subscribe({
       next:(value) => {
         console.log(value)
-        this.products = value
+        this.products = value.data
+        console.log(this.products)
       },
       error:(err) => {
         console.log(err)

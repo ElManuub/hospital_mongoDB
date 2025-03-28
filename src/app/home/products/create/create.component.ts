@@ -20,7 +20,7 @@ export class CreateComponent {
   photo: File | null = null
 
   product: Products = {
-    _id: '',
+    id: '',
     name: '',
     category_id: '',
     unit_stock: 0,
@@ -33,12 +33,24 @@ export class CreateComponent {
 
   constructor(private ProducService: ProductsService, private route: Router){}
 
+  seleccionImagen(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.photo = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.product.product_image = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   submit(){
     if(this.product.name && this.product.unit_price && this.product.unit_stock){
-      this.ProducService.createproducts(this.product, this.photo!).subscribe({
+      this.ProducService.createproducts(this.product, this.photo).subscribe({
         next: (res)=>{
           alert('Pruducto creado con exito!')
-          this.route.navigate(['/productos/list'])
+          this.route.navigate(['/products/list'])
         },
         error: (error)=>{
           this.errorMessage = error

@@ -1,5 +1,5 @@
 export interface Products  {
-  _id: string,
+  id: string,
   name: string,
   category_id: string,
   unit_stock: number,

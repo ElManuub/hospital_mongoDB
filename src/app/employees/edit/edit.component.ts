@@ -1,66 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeesService } from '../../services/employees/employees.service';
 import { Employees } from '../../models/employees';
 import { NavComponent } from '../../templates/nav/nav.component';
 import { FooterComponent } from '../../templates/footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit',
-  imports: [NavComponent, FooterComponent, CommonModule, ReactiveFormsModule],
+  standalone:true,
+  imports: [NavComponent, FooterComponent, CommonModule, FormsModule],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css'
 })
 export class EditComponent implements OnInit {
 
-  employeeForm!: FormGroup;
-  employee!: Employees;  // Un solo objeto en lugar de un array
+   id : string = ''
+   photo: File | null = null
+   password2: string = ''
+
+  employee: Employees = {
+    id: '',
+    first_name: '',
+    last_name: '',
+    gender: '',
+    email: '',
+    password: '',
+    birth_date: '',
+    hire_date: '',
+    profile_image: '',
+    address: '',
+    notes: '',
+    employee_type: '',
+    status: ''
+  };
 
   constructor(
-    private fb: FormBuilder,
     private href: ActivatedRoute,
     private route: Router,
     private employeeService: EmployeesService
   ) { }
 
   ngOnInit(): void {
-    // Inicializamos el formulario
-    this.employeeForm = this.fb.group({
-      first_name: [''],
-      last_name: [''],
-      gender: [''],
-      email: [''],
-      password: [''],
-      password2: [''],
-      birth_date: [''],
-      address: [''],
-      photo: [''],
-      notes: [''],
-      employee_type: [''] 
-    });
-
-    // Obtener el ID desde la URL y cargar datos
     this.href.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.employeeService.mostrar(id).subscribe(res => {
-          this.employee = res;
+      this.id = params.get('id') || '';
+      if (this.id) {
+        this.employeeService.mostrar(this.id).subscribe({
+          next: (res)=>{
+            console.log(res)
+            this.employee = res.data
+            console.log(this.employee)
+          },
+          error: ()=>{
 
-          // Llenar el formulario con los datos recibidos
-          this.employeeForm.patchValue({
-            first_name: this.employee.first_name,
-            last_name: this.employee.last_name,
-            gender: this.employee.gender,
-            email: this.employee.email,
-            birth_date: this.employee.birth_date,
-            address: this.employee.address,
-            notes: this.employee.notes,
-            employee_type: this.employee.employee_type
-          });
+          }
         });
       }
     });
   }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.photo = file 
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.employee.profile_image = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+
+  submit(){
+    this.employee.password = this.password2
+    this.employeeService.editar(this.employee, this.photo, this.id).subscribe({
+      next: (res)=>{
+        console.log(res)
+        this.route.navigate(['/employees/list'])
+      },
+      error: (error)=>{
+        console.log("error en respuesta:",error)
+        console.log(this.employee)
+      }
+    })
+  }
+  
 }

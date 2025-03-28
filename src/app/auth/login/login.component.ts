@@ -17,8 +17,10 @@ export class LoginComponent {
   constructor(private auth: LogingService, private router: Router){}
 
   loggear(){
+    console.log(this.email, this.password)
     this.auth.login(this.email, this.password).subscribe({
       next: (res)=>{
+        console.log(res)
         this.router.navigate(['/'])
       },
       error: (err)=>{

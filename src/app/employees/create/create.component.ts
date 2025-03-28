@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavComponent } from "../../templates/nav/nav.component";
 import { FooterComponent } from "../../templates/footer/footer.component";
 import { FormsModule } from '@angular/forms';
@@ -22,7 +22,7 @@ export class CreateComponent {
   errorMessage: string = ''
 
   public employee: Employees = {
-    _id : '',
+    id : '',
     first_name: '',
     last_name: '',
     birth_date: '',
@@ -30,26 +30,27 @@ export class CreateComponent {
     employee_type: '',
     gender: '',
     hire_date: '',
-    profile_image:'',
     notes: '',
     address: '',
     password: '',
-    status: ''
+    status: '',
+    profile_image: ''
   }
 
   constructor(private route: Router, private employeeService : EmployeesService) { }
 
 
   seleccionImagen(evento: any) {
-    if (evento.target.files.length > 0) {
-      this.photo = evento.target.files[0];
+    const file = evento.target.files[0];
+    if (file) {
+      this.photo = file;
     }
   }
   
   createEmployee() {
-    this.employeeService.createEmployee(this.employee, this.photo!).subscribe({
+    this.employeeService.createEmployee(this.employee, this.photo).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log("antes de crear"+ res);
         this.route.navigate(['/employees/list']);
       },
       error: (err) => {

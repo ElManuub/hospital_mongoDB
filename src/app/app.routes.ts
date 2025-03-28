@@ -12,7 +12,7 @@ import { ShowComponent as showEmployees } from './employees/show/show.component'
 import { CreateComponent as createEmployee } from './employees/create/create.component';
 import { ShowComponent as showCustomers} from './home/customers/show/show.component';
 import { PointOfSaleComponent } from './sales/point-of-sale/point-of-sale.component';
-import { userGuardGuard } from './auth/guard/user-guard.guard';
+import { adminGuard, userGuardGuard } from './auth/guard/user-guard.guard';
 import { StoreComponent } from './home/store/store.component';
 import { ListComponent as productsList } from './home/products/list/list.component';
 import { CreateComponent as createProduct } from './home/products/create/create.component';
@@ -30,10 +30,10 @@ export const routes: Routes = [
 {path:'customers/show', component:showCustomers, canActivate:[userGuardGuard]},
 
 //employees
-{path:'employees/list', component: listEmployees, canActivate:[userGuardGuard]},
-{path:'employee/show', component: showEmployees, canActivate:[userGuardGuard]},
-{path:'employee/edit', component: editEmployees, canActivate:[userGuardGuard]},
-{path:'employee/create', component: createEmployee, canActivate:[userGuardGuard]},
+{path:'employees/list', component: listEmployees, canActivate:[userGuardGuard, adminGuard]},
+{path:'employee/show/:id', component: showEmployees, canActivate:[userGuardGuard, adminGuard]},
+{path:'employee/edit/:id', component: editEmployees, canActivate:[userGuardGuard, adminGuard]},
+{path:'employee/create', component: createEmployee, canActivate:[userGuardGuard, adminGuard]},
 
 // point of sale
 {path:'sales', component: PointOfSaleComponent, canActivate:[userGuardGuard]},
@@ -48,15 +48,15 @@ export const routes: Routes = [
 {path:'store', component:StoreComponent, canActivate:[userGuardGuard]},
 {path:'products/list', component:productsList, canActivate:[userGuardGuard]},
 {path:'product/create', component:createProduct, canActivate:[userGuardGuard]},
-{path:'product/edit', component:editProduct, canActivate:[userGuardGuard]},
-{path:'product/show', component:showProduct, canActivate:[userGuardGuard]},
+{path:'product/edit/:id', component:editProduct, canActivate:[userGuardGuard]},
+{path:'product/show/:id', component:showProduct, canActivate:[userGuardGuard]},
 //categories
 {path:'categories/list', component:listCategories, canActivate:[userGuardGuard]},
 {path:'categories/create', component:createCategory, canActivate:[userGuardGuard]},
 {path:'categories/edit', component:editCategory, canActivate:[userGuardGuard]},
 
 //auth
-{path:'login', component:LoginComponent, canActivate:[userGuardGuard]},
+{path:'login', component:LoginComponent},
 
 //profile
 {path:'profile', component:ProfileComponent, canActivate:[userGuardGuard]}
